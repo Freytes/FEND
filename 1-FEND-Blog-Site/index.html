@@ -22,6 +22,14 @@ body {
   background: white;
 }
 
+.topmenu {
+  padding: 10px;
+  font-size: 10px;
+  text-align: center;
+  background: #aaa;
+}
+
+
 /* Create two unequal columns that floats next to each other */
 /* Left column */
 .leftcolumn {   
@@ -37,7 +45,7 @@ body {
 }
 
 /* Fake image */
-.fakeimg {
+.img {
   background-color: #aaa;
   width: 100%;
   padding: 20px;
@@ -65,8 +73,6 @@ body {
   margin-top: 20px;
 }
 
-
-
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 800px) {
   .leftcolumn, .rightcolumn {   
@@ -78,6 +84,10 @@ body {
 </head>
 <body>
 
+<div class="topmenu">
+<h2>Links</h2>
+</div>
+
 <div class="header">
   <h2>FEND BLOG</h2>
 </div>
@@ -87,21 +97,23 @@ body {
     <div class="card">
     
     <div style="width: 100%; overflow: hidden;">
-    <div style="width: 200; float: left;"> <h2>TITLE HEADING</h2> </div>
-    <div style="margin-left: 250px;"> <h3>Title description, Dec 7, 2017</h3> </div>
-</div>
-
-      <div class="fakeimg" style="height:200px;">Image</div>
-      <p>Some text..</p>
-      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-      
+    <div>March 31, 2020</div>
+    <div> <h3>Reality of Anxiety : The Anxious Mind</h3> </div>
     </div>
-    <div style="width: 300; float:right;"> <h3>...</h3> </div>
+
+      <div class="img" style="height:200px;">Image</div>
+      <p><em>"I learned that courage was not the absence of fear, but the triumph over it. The brave man is not he who does not feel afraid, but he who conquers that fear."
+        - Nelson Mandela</em></p>
+      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+     
+      <div> <h3>Read More...</h3> </div>
+    </div>
+  
   </div>
   <div class="rightcolumn">
     <div class="card">
       <h2>About Me</h2>
-      <div class="fakeimg" style="height:100px;">Image</div>
+      <div class="img" style="height:100px;">Image</div>
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
     </div>
   </div>
