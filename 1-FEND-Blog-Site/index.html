@@ -31,6 +31,29 @@ div{
   font-size: 10px;
   text-align: center;
   background: #aaa;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topmenu a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topmenu a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topmenu a.active {
+  background-color: #4CAF50;
+  color: white;
 }
 
 
@@ -94,11 +117,7 @@ div{
 <body>
 
 <div class="topmenu">
-<h2>  <ul>
-  <li><a href="https://github.com/freytes">Github</a></li>
-  <li><a href="https://linkedin.com/in/cfreytes">Linkedin</a></li>
-  <li><a href="https://twitter.com/iamfreytes">Twitter</a></li>
-</ul></h2>
+<a href="https://github.com/freytes">Home</a>
 </div>
 
 <div class="header">
@@ -115,6 +134,7 @@ div{
     </div>
 
       <div class="img" style="height:200px;">  <img src="./assets/images/head-2360166_640.jpg" alt="Anxious" style="height:200px"></div>
+     <br> 
       <blockquote cite="Nelson Mandela"><em>"I learned that courage was not the absence of fear, but the triumph over it. The brave man is not he who does not feel afraid, but he who conquers that fear."
         - Nelson Mandela</em></blockquote>
       <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
@@ -127,7 +147,7 @@ div{
     <div class="card">
       <h2>About Me</h2>
       <div class="about">
-        <img src="./assets/images/cfreytes-headshot.jpeg" alt="Freytes Headshot" style="height:200px">
+        <img src="./assets/images/cfreytes-headshot.jpeg" alt="Freytes Headshot" style="height:200px" class="imgAbout">
       </div>
       <p><em><b>Hello!</b></em> I am glad you made, it and hope you stay. My name is Christopher Freytes and I am just a regular guy who loves coffee and software development.</p>
       <p>Places where I can be <b>found:</b></p>
