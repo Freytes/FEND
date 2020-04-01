@@ -14,6 +14,10 @@ body {
   background: #f1f1f1;
 }
 
+div{
+  text-align: justify;
+}
+
 /* Header/Blog Title */
 .header {
   padding: 30px;
@@ -44,13 +48,15 @@ body {
   padding-left: 20px;
 }
 
-/* Fake image */
+/* image block */
 .img {
   background-color: #aaa;
   width: 100%;
   padding: 20px;
 }
-.about {
+
+/* images */
+.imgAbout {
   border-radius: 50%;
 }
 
@@ -88,7 +94,11 @@ body {
 <body>
 
 <div class="topmenu">
-<h2>Links</h2>
+<h2>  <ul>
+  <li><a href="https://github.com/freytes">Github</a></li>
+  <li><a href="https://linkedin.com/in/cfreytes">Linkedin</a></li>
+  <li><a href="https://twitter.com/iamfreytes">Twitter</a></li>
+</ul></h2>
 </div>
 
 <div class="header">
@@ -104,9 +114,9 @@ body {
     <div> <h3>Reality of Anxiety : The Anxious Mind</h3> </div>
     </div>
 
-      <div class="img" style="height:200px;">Image</div>
-      <p><em>"I learned that courage was not the absence of fear, but the triumph over it. The brave man is not he who does not feel afraid, but he who conquers that fear."
-        - Nelson Mandela</em></p>
+      <div class="img" style="height:200px;">  <img src="./assets/images/head-2360166_640.jpg" alt="Anxious" style="height:200px"></div>
+      <blockquote cite="Nelson Mandela"><em>"I learned that courage was not the absence of fear, but the triumph over it. The brave man is not he who does not feel afraid, but he who conquers that fear."
+        - Nelson Mandela</em></blockquote>
       <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
      
       <div> <h3>Read More...</h3> </div>
@@ -117,9 +127,15 @@ body {
     <div class="card">
       <h2>About Me</h2>
       <div class="about">
-        <img src="./1-FEND-Blog-Site/assets/images/cfreytes-headshot.jpeg" alt="Freytes Headshot" style="height:200px">
+        <img src="./assets/images/cfreytes-headshot.jpeg" alt="Freytes Headshot" style="height:200px">
       </div>
-      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+      <p><em><b>Hello!</b></em> I am glad you made, it and hope you stay. My name is Christopher Freytes and I am just a regular guy who loves coffee and software development.</p>
+      <p>Places where I can be <b>found:</b></p>
+      <ul>
+      <li><a href="https://github.com/freytes">Github</a></li>
+      <li><a href="https://linkedin.com/in/cfreytes">Linkedin</a></li>
+      <li><a href="https://twitter.com/iamfreytes">Twitter</a></li>
+    </ul>
     </div>
   </div>
 </div>
