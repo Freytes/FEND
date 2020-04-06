@@ -1,216 +1,102 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* {
-  box-sizing: border-box;
-}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-/* Add a gray background color with some padding */
-body {
-  font-family: Arial;
-  padding: 20px;
-  background: #f1f1f1;
-}
-
-div{
-  text-align: justify;
-}
-
-/* Header/Blog Title */
-.header {
-  padding: 30px;
-  font-size: 40px;
-  text-align: center;
-  background: white;
-}
-
-.topmenu {
-  padding: 10px;
-  font-size: 10px;
-  text-align: center;
-  background: #1d1e22;
-  overflow: hidden;
-}
-
-/* Style the links inside the navigation bar */
-.topmenu a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-/* Right-aligned section inside the top navigation */
-.topnav-right {
-  float: right;
-}
-
-/* Change the color of links on hover */
-.topmenu a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Add a color to the active/current link */
-.topmenu a.active {
-color: white;
-}
-
-a
-{
-color:black; 
-     
-}
-
-/* Create two unequal columns that floats next to each other */
-/* Left column */
-.leftcolumn {  
-  float: left;
-  width: 75%;
-}
-
-/* Right column */
-.rightcolumn {
-  float: left;
-  height: auto;
-  width: 25%;
-  padding-left: 20px;
-}
-
-/* image block */
-.img {
-  background-color: #aaa;
-  width:100%; 
-  height:100%; 
-  padding: 20px;
-}
-
-/* images */
-.imgAbout {
-  width:100%; 
-  height:auto; 
-  object-fit: contain; 
-  border-radius: 50%;
-}
-
-/* Add a card effect for articles */
-.card {
-  min-height: 550px;
-   background-color: white;
-   padding: 20px;
-   margin-top: 20px;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Footer */
-.footer {
-  display: flex;
-  padding: 20px;
-  background: #1d1e22;
-  margin-top: 20px;
-  flex-direction: row;
-    justify-content: space-between;
-}
-.footer input[type=text] {
-  padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
-  border: none;
-}
-.footer .subscription-form button {
-  padding: 6px;
-  margin-top: 8px;
-  margin-right: 16px;
-  background: #ddd;
-  font-size: 17px;
-  border: noSne;
-  cursor: pointer;
-}
-.footer-links a{
-float: right;
-color: white;
-}
-
-
-/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 800px) {
-  .leftcolumn, .rightcolumn {   
-  
-    width: 100%;
-    padding: 0;
-  }
-}
-</style>
+  <link rel="stylesheet" href="./assets/styles/maincontent.css">
+  <link rel="stylesheet" href="./assets/styles/navigation.css">
+  <link rel="stylesheet" href="./assets/styles/responsive.css">
 </head>
+
 <body>
 
-<div class="topmenu">
-<a href="./index.html">Home</a>
-<div class="topnav-right">
-  <a href="https://github.com/freytes">Github</a>
-</div>
-</div>
-
-<div class="header">
-  <h2>FEND BLOG</h2>
-</div>
-
-<div class="row">
-  <div class="leftcolumn">
-    <div class="card">
-    
-    <div style="width: 100%; height: 100%; overflow: hidden;">
-    <div>March 31, 2020</div>
-    <div> <h3>Reality of Anxiety : The Anxious Mind</h3> </div>
-    </div>
-
-      <div class="img" style="height:200px;">  <img src="./assets/images/head-2360166_640.jpg" alt="Anxious" style="height:200px"></div>
-     <br> 
-      <blockquote cite="Nelson Mandela"><em>"I learned that courage was not the absence of fear, but the triumph over it. The brave man is not he who does not feel afraid, but he who conquers that fear."
-        - Nelson Mandela</em></blockquote>
-      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-     
-      <div> <h3><a href='./post.html'>Read More...</a></h3> </div>
-    </div>
-  
-  </div>
-  <div class="rightcolumn">
-    <div class="card">
-      <h2>About Me</h2>
-      <div class="about">
-        <img src="./assets/images/cfreytes-headshot.jpeg" alt="Freytes Headshot" style="height:200px" class="imgAbout">
+  <navigation>
+    <div class="topmenu">
+      <a href="./index.html">Home</a>
+      <div class="topnav-right">
+        <a href="https://github.com/freytes">Github</a>
       </div>
-      <p><em><b>Hello!</b></em> I am glad you made, it and hope you stay. My name is Christopher Freytes and I am just a regular guy who loves coffee and software development.</p>
-      <p>Places where I can be <b>found:</b></p>
-      <ul>
-      <li><a href="https://github.com/freytes">Github</a></li>
-      <li><a href="https://linkedin.com/in/cfreytes">Linkedin</a></li>
-      <li><a href="https://twitter.com/iamfreytes">Twitter</a></li>
-    </ul>
+    </div>
+  </navigation>
+
+  <header>
+    <div class="header">
+      <h2>FEND BLOG</h2>
+    </div>
+  </header>
+
+  <div class="row">
+    <div class="leftcolumn">
+      <article>
+        <div class="card">
+
+          <div style="width: 100%; height: 100%; overflow: hidden;">
+            <div>March 31, 2020 | Christopher Freytes</div>
+            <div>
+              <h3>Reality of Anxiety : The Anxious Mind</h3>
+            </div>
+          </div>
+          <figure>
+            <div class="img" style="height:200px;"> <img src="./assets/images/head-2360166_640.jpg" alt="Anxious"
+                style="height:200px">
+              <figcaption>
+                <p style="font-size: 10px">[A silhouette of a head in clouds - Author unknown]</p>
+              </figcaption>
+
+            </div>
+
+          </figure>
+
+          <br>
+          <blockquote cite="Nelson Mandela"><em>"I learned that courage was not the absence of fear, but the triumph
+              over it. The brave man is not he who does not feel afraid, but he who conquers that fear."
+              - Nelson Mandela</em></blockquote>
+          <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+            ullamco.</p>
+
+          <div>
+            <h3><a href='./post.html'>Read More...</a></h3>
+          </div>
+        </div>
+      </article>
+
+    </div>
+    <div class="rightcolumn">
+      <aboutme>
+        <div class="card">
+          <h2>About Me</h2>
+          <div class="about">
+            <img src="./assets/images/cfreytes-headshot.jpeg" alt="Freytes Headshot" style="height:200px"
+              class="imgAbout">
+          </div>
+          <p><em><b>Hello!</b></em> I am glad you made, it and hope you stay. My name is Christopher Freytes and I am
+            just a regular guy who loves coffee and software development.</p>
+          <p>Places where I can be <b>found:</b></p>
+          <ul>
+            <li><a href="https://github.com/freytes">Github</a></li>
+            <li><a href="https://linkedin.com/in/cfreytes">Linkedin</a></li>
+            <li><a href="https://twitter.com/iamfreytes">Twitter</a></li>
+          </ul>
+        </div>
+      </aboutme>
+
     </div>
   </div>
-</div>
-<footer>
-<div class="footer">
-<div class="subscription-form">
-  <form action="#">
-    <input type="text" placeholder="Email" name="email">
-    <button type="submit">Subscribe</button>
-</div>
-<div class="footer-links">
-<h2 style=color:white;><a href='#'>BLOG</a></h2>
-<h2 style=color:white;><a href='#'>OTHER</a></h2>
-</div>
-</div>
-</footer>
+  <footer>
+    <div class="footer">
+      <div class="subscription-form">
+        <form action="#">
+          <input type="text" placeholder="Email" name="email">
+          <button type="submit">Subscribe</button>
+      </div>
+      <div class="footer-links">
+        <h2 style=color:white;><a href='#'>BLOG</a></h2>
+        <h2 style=color:white;><a href='#'>OTHER</a></h2>
+      </div>
+    </div>
+  </footer>
 </body>
+
 </html>
