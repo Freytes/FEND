@@ -5,7 +5,7 @@
 * [Instructions](#instructions)
 * [Configuration](#configuration)
 
-* [Known Issues](#Known Issues)
+* [KnownIssues](#KnownIssues)
 
 ## Instructions
 
