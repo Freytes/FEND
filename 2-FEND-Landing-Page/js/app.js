@@ -29,7 +29,7 @@ const nav = document.querySelector("#navbar__list");
 
 function insertNavLink(navLinkName, sectionId) {
   // create a link
-  const htmlTextToAdd = `<ul><a href="#${sectionId}" class="menu__link">${navLinkName}</a></ul>`;
+  const htmlTextToAdd = `<li><a href="#${sectionId}" class="menu__link">${navLinkName}</a></li>`;
   // add it to the nav
   nav.insertAdjacentHTML("beforeend", htmlTextToAdd);
 }
@@ -103,7 +103,7 @@ function smoothScroll(el) {
 
 // create a "Go to Top" hidden floating button
 function createBtnUp() {
-  const htmlTextToAdd = `<a href="#" class="bottom__link hide">To top</a>`;
+  const htmlTextToAdd = `<a href="#" class="bottom__link hide">TOP</a>`;
   document.body.insertAdjacentHTML("afterbegin", htmlTextToAdd);
 }
 
