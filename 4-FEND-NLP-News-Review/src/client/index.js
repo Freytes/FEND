@@ -1,12 +1,15 @@
-import { checkForUrl } from './js/urlChecker'
+import { validURL } from './js/urlChecker'
 import { handleSubmit } from './js/formHandler'
-import 'base.scss'
-import 'footer.scss'
-import 'form.scss'
-import 'header.scss'
-import 'resets.scss'
+import './styles/resets.scss'
+import './styles/footer.scss'
+import './styles/form.scss'
+import './styles/base.scss'
+import './styles/header.scss'
+import './styles/messages.scss'
 
-export {
-    checkForUrl,
-    handleSubmit
+// export as module
+export{
+	validURL,
+	handleSubmit
 }
+ 

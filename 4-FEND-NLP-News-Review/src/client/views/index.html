@@ -1,48 +1,68 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Aylient NLP</title>
+    </head>
 
-<head>
-    <meta charset="utf-8">
-    <title>Classify</title>
-</head>
+    <body>
+        <header>
+            <div class="">
+                Evaluate a News Article with NLP
+            </div>
+        </header>
 
-<body>
+        <main>
 
-    <header>
-        <div class="">
-            Logo
-        </div>
-        <div class="">
-            navigation
-        </div>
-    </header>
+            <h2>Type in a "URL" to see what the Aylient NLP returns:</h2>
+    
 
-    <main>
-        <section>
-            <form class="" onsubmit="return handleSubmit(event)">
-                <input id="name" type="text" name="input" value="" placeholder="Please insert your name">
-                <input id="url" type="text" name="input" value="" placeholder="Please insert a valid article url">
-                <input type="submit" name="" value="submit" onclick="return client.handleSubmit(event)"
-                    onsubmit="return client.handleSubmit(event)">
-            </form>
+            <section class="errors">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <div id="error"></div>
+            </section> 
+
+
+            <section>
+                <form class="" onsubmit="return Client.handleSubmit(event)">
+                    <input id="name" type="url" name="test-url" value=""  placeholder="https://example.com/article">
+                    <input type="submit" name="" value="submit" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">
+                </form>
             <section>
 
-                <section>
-                    <strong>Form Results:</strong>
-                    <div id="results"></div>
+            <section class="url-results">
+                    <ul>
+                        <li>
+                            <h3>Text Polarity:</h3>
+                            <p id="polarity"></p>
+                            <h4>Confidence: </h4>
+                            <p id="polarity_confidence"></p>
+                        </li>
+    
+                        <li>
+                            <h3>Text Subjectivity:</h3>
+                            <p id="subjectivity"></p>
+                            <h4>Confidence: </h4>
+                            <p id="subjectivity_confidence"></p>
+                        </li>
+    
+                        <h3>Text Excerpt:</h3>
+                        <p id="excerpt"></p>
+                    </ul>
                 </section>
-    </main>
+        </main>
 
-    <footer>
-        <p>This is a footer</p>
-    </footer>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js');
-            });
-        }
-    </script>
-</body>
+        <script>
+                if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js').then(registration =>{
+                        console.log('SW registered successfuly: ', registration);
+                    });
+                });
+                }else{
+                console.log("Service Working not supported");
+                    }
+        </script>
 
+    </body>
 </html>
