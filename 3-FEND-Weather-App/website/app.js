@@ -1,90 +1,56 @@
 /* Global Variables */
-const form = document.querySelector('.app__form');
-const icons = document.querySelectorAll('.entry__icon');
+// US is default country. Parameter is zip code,country code
+const url = "http://api.openweathermap.org/data/2.5/weather?units=imperial&zip=";
+const apiKey = "&APPID=68c274ec5dbc7f1baf8f78628abd1482";
 
-//Base URL
-const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-
-//API Key
-const apiKey = '68c274ec5dbc7f1baf8f78628abd1482';
-
-//Retrieve Data
+// Create a new date instance dynamically with JS
 let d = new Date();
-let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+let newDate = d.getMonth()+ 1 +'.'+ d.getDate()+'.'+ d.getFullYear();
 
-// Event listener to add function to existing HTML DOM element
-document.getElementById('generate').addEventListener('click', performAction);
+const getTheData = async (url = '') => {
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
-//Function called by event listener
-function performAction(e) {
-  e.preventDefault();
-
-  // get user input values
-  const newZip = document.getElementById('zip').value;
-  const content = document.getElementById('feelings').value;
-
-  getWeather(baseURL, newZip, apiKey)
-    .then(function (userData) {
-      // add data to POST request
-      postData('/add', { date: newDate, temp: userData.main.temp, content })
-    }).then(function (newData) {
-      // call updateUI to update browser content
-      updateUI()
-    })
-  // reset form
-  form.reset();
-}
-
-/* Function to GET Web API Data*/
-const getWeather = async (baseURL, newZip, apiKey) => {
-  // res equals to the result of fetch function
-  const res = await fetch(baseURL + newZip + apiKey);
-  try {
-    // userData equals to the result of fetch function
-    const userData = await res.json();
-    return userData;
-  } catch (error) {
-    console.log("error", error);
-  }
-}
-
-/* Function to POST data */
+// POST Data
 const postData = async (url = '', data = {}) => {
-  const req = await fetch(url, {
-    method: "POST",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8"
-    },
-    body: JSON.stringify({
-      date: data.date,
-      temp: data.temp,
-      content: data.content
-    })
-  })
-
-  try {
-    const newData = await req.json();
-    return newData;
-  }
-  catch (error) {
-    console.log(error);
-  }
+    const response = await fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+          // Body data type must match "Content-Type" header
+        body: JSON.stringify(data)
+        });
 };
 
-
-const updateUI = async () => {
-  const request = await fetch('/all');
-  try {
-    const allData = await request.json()
-    // show icons on the page
-    icons.forEach(icon => icon.style.opacity = '1');
-    // update new entry values
-    document.getElementById('date').innerHTML = allData.date;
-    document.getElementById('temp').innerHTML = allData.temp;
-    document.getElementById('content').innerHTML = allData.content;
-  }
-  catch (error) {
-    console.log("error", error);
-  }
+const updateData = async () => {
+    const projectData = await getTheData('/data');
+    document.getElementById('date').innerHTML = `${projectData.date}`;
+    document.getElementById('temp').innerHTML = `${projectData.temperature} &#8457;`;
+    document.getElementById('content').innerHTML = projectData.feelings;
 };
+
+const generateData = async () => {
+    const feelings = document.getElementById('feelings').value;
+    const zip = document.getElementById('zip').value;
+    const response = await fetch(`${url}${zip}${apiKey}`);
+    try {
+        const data = await response.json();
+        data.feelings = feelings;
+        data.date = newDate;
+        await postData('/', data);
+        updateData();
+    } catch (error) {
+        console.error("error", error);
+    }
+};
+
+document.getElementById('generate').addEventListener('click', generateData);
