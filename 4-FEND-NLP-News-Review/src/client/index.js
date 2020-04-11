@@ -1,15 +1,12 @@
-import { checkForName } from './js/nameChecker'
+import { checkForUrl } from './js/urlChecker'
 import { handleSubmit } from './js/formHandler'
-import { buttonHandler } from './js/buttonHandler'
-
-import './styles/resets.scss'
-import './styles/base.scss'
-import './styles/form.scss'
-import './styles/header.scss'
-import './styles/footer.scss'
+import 'base.scss'
+import 'footer.scss'
+import 'form.scss'
+import 'header.scss'
+import 'resets.scss'
 
 export {
-    checkForName,
-    handleSubmit,
-    buttonHandler
+    checkForUrl,
+    handleSubmit
 }

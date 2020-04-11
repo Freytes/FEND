@@ -1,52 +1,48 @@
-const dotenv = require('dotenv');
-dotenv.config();
 var path = require('path')
 const express = require('express')
-const mockAPIResponse = require('./mockAPI.js')
+var aylien = require("aylien_textapi")
+const bodyParser = require("body-parser")
+
+projectData = {}
+
+// set aylien API credentias
+var textapi = new aylien({
+    application_id: '84918b5c',
+    application_key: 'a700ed56dac26ad2c73f1f58a30cfb79'
+})
+
 const app = express()
-const cors = require('cors')
-const bodyParser = require('body-parser');
-const aylien = require('aylien_textapi')
-const postRequest = ('./handle')
-app.use(cors())
+
 app.use(express.static('dist'))
 
-app.use(bodyParser.urlencoded({
-  extended: true
-})
-);
-app.use(bodyParser.json())
-console.log(__dirname);
+console.log(__dirname)
+
 app.get('/', function (req, res) {
-    res.sendFile('dist/index.html')
-})
-app.get('/save', function (req, res) {
-    res.json(mockAPIResponse);
+    res.sendFile(__dirname +'dist/index.html')
 })
 
 // designates what port the app will listen to for incoming requests
-app.listen(8081, function () {
-    console.log('Example app listening on port 8081!')
-});
+app.listen(8080, function () {
+    console.log('Example app listening on port 8080!')
+})
 
-var textapi = new aylien({
-  application_id: process.env.API_ID,
-  application_key: process.env.API_KEY
-  });
+//Here we are configuring express to use body-parser as middle-ware.
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
-  console.log(process.env)
-// Post Route
-app.post("/article", (req, res) => {
-  textapi.sentiment({
-    url: req.body.text, 
-    mode: 'document'
-  }, function(error, response) {
-    console.log(response)
-    res.send(response)
-    if (error === null) {
-      console.log(response);
-    }
-  })
-});
+// Cors for cross origin allowance
+const cors = require("cors")
+app.use(cors())
 
-module.exports = app;
+app.post('/all', function (req, res) {
+    textapi.classify({
+        url: req.body.url
+    }, function (error, response) {
+        if (error === null) {
+            response['categories'].forEach(function (c) {
+                projectData = c;
+                res.send(projectData);
+            });
+        }
+    });
+})
