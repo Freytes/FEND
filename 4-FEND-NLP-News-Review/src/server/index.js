@@ -7,8 +7,8 @@ projectData = {}
 
 // set aylien API credentias
 var textapi = new aylien({
-    application_id: '84918b5c',
-    application_key: 'a700ed56dac26ad2c73f1f58a30cfb79'
+    application_id: '1409619680744',
+    application_key: 'c956d1da423d2464e7ee38119aa27fc2'
 })
 
 const app = express()
@@ -18,7 +18,7 @@ app.use(express.static('dist'))
 console.log(__dirname)
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname +'dist/index.html')
+    res.sendFile('index.html',{root:__dirname });
 })
 
 // designates what port the app will listen to for incoming requests
