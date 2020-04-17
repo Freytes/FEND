@@ -1,44 +1,43 @@
-const merge = require('webpack-merge');
-const common = require('./webpack.common.js');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-// Port settings are stored in this file. They are shared with the
-// express server this way.
-const constants = require('./CONSTANTS');
-const backendServer = `http://localhost:${constants.BACKEND_PORT}/`;
-
-module.exports = merge(common, {
+module.exports = {
+    entry: './src/client/index.js',
     mode: 'development',
     devtool: 'source-map',
-    devServer: {
-        // webpack-dev-server setup
-        host: 'localhost',
-        port: constants.WEBPACK_DEV_PORT,
-        proxy: {
-            // The frontend code uses the backend to store
-            // data. webpack-dev-server fails at this. Hence
-            // redirecting frontend api requests to a different port.
-            context: () => true,
-            target: backendServer,
-            secure: false
-        }
+    stats: 'verbose',
+    output: {
+        libraryTarget: 'var',
+        library: 'Client'
     },
     module: {
         rules: [
             {
-                enforce: 'pre', // This comes before babel-loader
-                test: /.js$/,
+                test: '/\.js$/',
                 exclude: /node_modules/,
-                loader: 'eslint-loader',
-                options: {}
+                loader: "babel-loader"
             },
             {
-                test: /\.s[ac]ss$/,
+                test: /\.scss$/,
                 use: [ 'style-loader', 'css-loader', 'sass-loader' ]
             }
         ]
     },
     plugins: [
-        new BundleAnalyzerPlugin()
-    ],
-});
+        new HtmlWebPackPlugin({
+            template: "./src/client/views/index.html",
+            filename: "./index.html",
+        }),
+        new CleanWebpackPlugin({
+            // Simulate the removal of files
+            dry: true,
+            // Write Logs to Console
+            verbose: true,
+            // Automatically remove all unused webpack assets on rebuild
+            cleanStaleWebpackAssets: true,
+            protectWebpackAssets: false
+        })
+    ]
+}

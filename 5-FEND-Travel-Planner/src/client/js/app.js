@@ -1,243 +1,220 @@
-// Frontend javascript for Travel app
+import { geoNamesApiUrl, weatherBitApiUrl, pixaBayApiUrl } from './apiUrls';
+import { errorHandling, hideErrorMessage, getCurrentDate, differenceDays, getEnvLocalUrl } from './helper';
 
-// Read .env file for API keys
-const dotenv = require('dotenv');
+/* FUNCTIONS */
 
-// Top level JS object to hold latest trip details 
-const upcomingTripDetails = {
-    place: '',
-    country: '',
-    latitude: '',
-    longitude: '',
-    departure: ''
-};
+/* API Functions */
 
-const presentErr = console.log; // Error presentation function
-
-// Setup for GeoNames API. Rubric needs this info in the main app.js:
-// "app.js: There should be URLS and API Keys for at least 3 APIs, including
-// Geonames, Dark Sky, and Pixabay."
-const geonamesUrl = 'http://api.geonames.org/postalCodeSearchJSON';
-const geonamesUser = 'neodotneo';
-const coordQueryUrl = (place, user) => {
-    // Need to handle input like 'City, State' as well as 'City State'
-    return `${geonamesUrl}?placename=${encodeURIComponent(place)}&username=${user}` +
-        '&maxRows=2&style=short';
-};
-
-// Setup for Dark Sky & Pixabay APIs. The API communication actually
-// happens through the backend. The following are here just to meet
-// rubric requirements of these vars being defined in frontend
-// app.js. The API communication cannot happen through frontend app.js
-// owing to cross-origin restrictions in the dark sky API.
-/* eslint-disable */
-const weatherbitUrl = 'https://api.weatherbit.io/v2.0/forecast/daily/';
-const weatherbitKey = process.env.WEATHERBIT_KEY;
-
-const pixabayUrl = 'https://pixabay.com/api/?category=places&key=';
-const pixabayKey = process.env.PIXABAY_KEY;;
-/* eslint-enable */
-
-// Setup for REST Countries API -- one of the 'Extend your Project
-// Further' recommendations.
-const countriesUrl = 'https://restcountries.eu/rest/v2/alpha/';
-const countriesQuery = countryCode => `${countriesUrl}${countryCode}`;
-
-// Helper function to handle initial form input interaction
-const updateEntryHelp = text =>
-    document.getElementById('whats-happening').innerHTML = text;
-
-export function activateDateField (ev) {
-    ev.preventDefault();
-    document.getElementById('new-travel-date').disabled = false;
-    updateEntryHelp('Great! Please enter your travel date...');
-}
-
-export function activateSaveButton (ev) {
-    ev.preventDefault();
-    document.getElementById('save-trip-button').disabled = false;
-    updateEntryHelp('Awesome! Please click Save Trip button to confirm!');
-}
-
-// Helper function to validate that city and date fields are not funky
-const validateInputForms = () => {
-    const valid = (document.getElementById('travel-to-city').value != '')
-          && (document.getElementById('new-travel-date').value != '')
-    if (!valid) {
-        alert('Please enter valid Travel Destination and Dates!');
-        return false;
-    } else { return true; }
-}
-
-// This function creates the travel card for the latest input
-function createUiNewTravelCard () {
-    const tripDetailsDiv = document.createElement('div');
-    tripDetailsDiv.class = 'upcoming-trip-details';
-
-    // Insert new card here
-    const tripDetailsDivHolder = document.getElementById('upcoming-trip-holder');
-    
-    const tripCard = document.createElement('div');
-    tripCard.id = 'upcoming-trip-details';
-
-    const tripLocation = document.createElement('h2');
-    tripLocation.id = 'upcoming-trip-location';
-    tripLocation.innerHTML = 'Fetching Destination Coordinates...';
-
-    const tripDays = document.createElement('h2');
-    tripDays.id = 'days-to-go';
-
-    const tripWeather = document.createElement('h3');
-    tripWeather.id = 'weather';
-    tripWeather.innerHTML = 'Fetching Weather at Destination...';
-
-    const placeImg = document.createElement('img');
-    placeImg.id = 'place-img';
-
-    tripCard.appendChild(tripLocation);
-    tripCard.appendChild(tripDays);
-    tripCard.appendChild(tripWeather);
-
-    // Refresh div before inserting HTML
-    tripDetailsDivHolder.innerHTML = '';
-    tripDetailsDivHolder.appendChild(placeImg);
-    tripDetailsDivHolder.appendChild(tripCard);
-}
-
-export const saveToLocalStorage = () => {
-    localStorage.setItem('travelAppHistory', JSON.stringify({
-        place: document.getElementById('travel-to-city').value,
-        departure: document.getElementById('new-travel-date').value
-    }));
-}
-
-export const getFromLocalStorage = () => {
-    const history = localStorage.getItem('travelAppHistory');
-    if (history) {
-        const data = JSON.parse(history) ||
-              { place: '', departure: '' };
-        document.getElementById('new-travel-date').value =
-            data.departure;
-        document.getElementById('travel-to-city').value =
-            data.place;
-	document.getElementById('save-trip-button').disabled = false;
-	document.getElementById('new-travel-date').disabled = false;
-    }
-}
-
-export async function saveTripAndQuery (ev) {
-    ev.preventDefault();
-    updateEntryHelp('Thanks! Saving Trip...');
-
-    // At this point, both city and date functions should have valid
-    // values
-    let success = validateInputForms(); 
-    // Start API queries here
-    /* Things to do:
-       - New card appears to show travel details
-       - Coordinates query API fires off. It is slowest.
-       - Image search shows loading sign.
-       - Image fetcher API fires and updates image.
-       - Weather div updates to show that it is fetching weather
-       - Weather API fires off after coordinates are available.
-    */
-    saveToLocalStorage();
-    createUiNewTravelCard();
-    getRemainingDays();
-    // The following calls the rest of the APIs in chain
-    getLocationCoordinates();
-    
-    // Depending on the API responses, set tool tip messages
-    if (success) {
-        updateEntryHelp('Trip Saved. Please enter next destination.')
-    } else {
-        updateEntryHelp('Sorry -- something went wrong. Please try again.')
-    }
-}
-
-async function getPlaceDetails (res) {
-    const data = {
-        latitude: res.lat,
-        longitude: res.lng,
-        date: upcomingTripDetails.departure,
-        placeName: res.place
-    };
-    const apiResponse =
-          await fetch('/getPlaceDetails', {
-              method: 'POST',
-              credentials: 'same-origin',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(data)
-          });
+//fetch data from getGeoNames api
+const getGeoNames = async (cityName) => {
+    //get url for request
+    const geoUrl = geoNamesApiUrl(cityName);
+    //fetch data from the geo names API
+    const res = await fetch(geoUrl);
     try {
-        const placeInfo = await apiResponse.json();
-        document.getElementById('weather').innerHTML = `
-Forecast: ${placeInfo.summary}
-L: ${placeInfo.tempLow} F, H: ${placeInfo.tempHigh} F
-        `;
-        document.getElementById('place-img').src =
-            placeInfo.image;
-    } catch(err) {
-        presentErr('Failed to location details: ', err);
+        //get data from json
+        const data = await res.json();
+        console.log(data);
+        //return recieved data
+        return data;
+    } catch (error) {
+        //deal with the error
+        console.log('getGeoNames error: ', error);
+        errorHandling(`There was and error: ${error}`);
     }
-}
+};
 
-// Function to get full country name from REST Countries API
-export async function getFullCountryName (data) {
-    const countryCode = data.country;
-    await (fetch(countriesQuery(countryCode)))
-          .then(res => res.json())
-          .then(res => {
-              data.country = res.name;
-              upcomingTripDetails.country = res.name;
-          })
-          .catch(err => presentErr("Country's Full name fetch failed: ", err));
+//fetch data from WeatherBit api
+const getWeatherBit = async (days, lat, lot) => {
+    //get url for request
+    const weatherUrl = weatherBitApiUrl(days, lat, lot);
+    //fetch data from the weather API
+    const res = await fetch(weatherUrl);
+    try {
+        //get data from json
+        const data = await res.json();
+        console.log(data);
+        //return recieved data
+        return data;
+    } catch (error) {
+        //deal with the error
+        console.log('getWeatherBit error: ', error);
+        errorHandling(`There was and error: ${error}`);
+    }
+};
 
-    return data;
-}
+//fetch data from WeatherBit api
+const getPixabay = async (cityCountry) => {
+    //get url for request
+    const pixabayUrl = pixaBayApiUrl(cityCountry);
+    //fetch data from the weather API
+    const res = await fetch(pixabayUrl);
+    try {
+        //get data from json
+        const data = await res.json();
+        console.log(data);
+        //return recieved data
+        return data;
+    } catch (error) {
+        //deal with the error
+        console.log('getPixabay error: ', error);
+        errorHandling(`There was and error: ${error}`);
+    }
+};
 
-async function uiUpdatePlaceName(data) {
-    document.getElementById('upcoming-trip-location').innerHTML =
-        `${data.place}, ${data.country}`;
-    return data;
-}
+//post recieved and user data to server
+const postDataToServer = async (url = '', data = {}) => {
+    //body of the response
+    const response = await fetch(getEnvLocalUrl() + url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    });
 
-async function getLocationCoordinates () {
-    const location = document.getElementById('travel-to-city').value;
-    fetch(coordQueryUrl(location, geonamesUser))
-        .then(res => res.json())
-        .then(res => {
-            const place = res.postalCodes.shift();
-            const city = place.placeName;
-            const country = place.countryCode;
-            upcomingTripDetails.latitude = place.lat;
-            upcomingTripDetails.longitude = place.lng;
-            upcomingTripDetails.place = city;
-            upcomingTripDetails.country = country;
-            return {lat: place.lat, lng: place.lng,
-                    place: city, country: country};
+    try {
+        //wait for data from server
+        const newData = await response.json();
+        console.log(newData);
+        return newData;
+    } catch (error) {
+        console.log('postData error: ', error);
+        errorHandling('There was and error. Please, try it again.');
+    }
+};
+
+
+/* APP functions */
+
+//handle submit the form
+const handleSubmit = event => {
+    event.preventDefault();
+    //hide potencially visible error block
+    hideErrorMessage();
+
+    //entered city name
+    const cityName = document.getElementById('cityName').value;
+    //entered trip date
+    const tripDate = document.getElementById('tripDate').value;
+
+    //how many days from now is trip?
+    //plus one because weather count even today
+    let howManyDays = Math.round(differenceDays(new Date(), new Date(tripDate))) + 1;
+    if (howManyDays == 0) howManyDays++;
+    console.log(howManyDays);
+
+    //check for empty inputs
+    if (!cityName) {
+        errorHandling('Fill the city name you want to travel to.');
+        return;
+    }
+    if (!tripDate) {
+        errorHandling('Fill the date trip.');
+        return;
+    }
+
+    //get getGeoNames
+    getGeoNames(cityName)
+        //get weather info
+        .then(function (gData) {
+            if (gData && gData.totalResultsCount && gData.totalResultsCount > 0 && gData.geonames[0]) {
+                getWeatherBit(howManyDays, gData.geonames[0].lat, gData.geonames[0].lng)
+                    .then(function (wData) {
+                        if (wData && wData.data) {
+                            getPixabay(gData.geonames[0].name + '+' + gData.geonames[0].countryName)
+                                //post data to server
+                                .then(function (pData) {
+                                    let postData = {
+                                        latitude: wData.lat,
+                                        longitude: wData.lon,
+                                        cityName: gData.geonames[0].name,
+                                        country: gData.geonames[0].countryName,
+                                        max_temp: wData.data[wData.data.length - 1].max_temp,
+                                        min_temp: wData.data[wData.data.length - 1].min_temp,
+                                        weatherDesc: wData.data[wData.data.length - 1].weather.description,
+                                        weatherIcon: wData.data[wData.data.length - 1].weather.icon,
+                                        tripDate: wData.data[wData.data.length - 1].valid_date,
+                                        imageUrl: pData.hits[0] ? pData.hits[0].webformatURL : null
+                                    };
+                                    localStorage.setItem('tripData', JSON.stringify(postData));
+                                    postDataToServer('/addTripData', postData);
+                                })
+                                //update ui
+                                .then(updateUI);
+                        }
+                    })
+            }
+            else errorHandling('Sorry, not found your city. Please enter different one');
         })
-        .then(res => getFullCountryName(res))
-        .then(res => uiUpdatePlaceName(res))
-        .then(res => getPlaceDetails(res))
-        .catch(err =>
-               presentErr("Something went wrong in fetching API results: ", err));
-    return {
-        lat: upcomingTripDetails.latitude,
-        lng: upcomingTripDetails.longitude
+};
+
+//update IU based on recieved data
+const updateUI = async () => {
+    //request to server for user data input
+    const request = await fetch(getEnvLocalUrl() + '/tripData');
+    try {
+        //wait for all data from server
+        const allData = await request.json();
+        console.log(allData);
+        fillUI(allData)
+    } catch (error) {
+        console.log('update UI error: ', error);
+        errorHandling('There was and error. Please, try it again.');
     }
-}
+};
 
-export const calcDays = date =>
-      Math.round((date - new Date())/(1000*60*60*24));
+//fill the UI with the data
+const fillUI = (allData) => {
+    //fill the UI with user data
+    document.getElementById('tripCard').classList.remove('hidden');
 
-function getRemainingDays () {
-    upcomingTripDetails.departure =
-        document.getElementById('new-travel-date').valueAsNumber;
-    const daysToGo = calcDays(upcomingTripDetails.departure);
-    document.getElementById('days-to-go').innerHTML =
-        `${daysToGo} days to go!`; 
-}
+    //image
+    if (allData.imageUrl) {
+        document.getElementById('tripImage').setAttribute('src', allData.imageUrl);
+        document.getElementById('tripImage').classList.remove('hidden');
+    } else {
+        document.getElementById('tripImage').classList.add('hidden');
+    }
+    //heading of the trip
+    document.getElementById('tripHeading').innerHTML = `Travel to: ${allData.cityName}, ${allData.country}`;
+    document.getElementById('departureDate').innerHTML = `Departure date: ${allData.tripDate}`;
+    document.getElementById('tempHigh').innerHTML = `Temperature high: ${allData.max_temp}`;
+    document.getElementById('tempLow').innerHTML = `Temperature low: ${allData.min_temp}`;
+    document.getElementById('weatherIcon').setAttribute('src', `https://www.weatherbit.io/static/img/icons/${allData.weatherIcon}.png`);
+    document.getElementById('weatherText').innerHTML = `${allData.weatherDesc}`;
+};
 
+//initializaton of the app - listeners
+const init = () => {
+    //listener for the submit button of the form
+    document.getElementById('submitForm').addEventListener('click', handleSubmit);
+
+    //get the list of countries
+    //generateCountryList();
+
+    //edit trip date input 
+    let dateInput = document.getElementById('tripDate');
+    //set the date as a value
+    dateInput.value = getCurrentDate();
+    //set min date value for today
+    dateInput.setAttribute('min', getCurrentDate());
+    //set max date value for today (weather api has only 16day forecast)
+    dateInput.setAttribute('max', getCurrentDate(16));
+
+    //get data from local storage
+    let tripData = localStorage.getItem('tripData');
+    if (tripData) {
+        fillUI(JSON.parse(tripData));
+    }
+};
+
+//add a method addDays for Date prototype
+Date.prototype.addDays = function (days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+};
+
+export { handleSubmit, init, getGeoNames, getPixabay }

@@ -1,48 +1,62 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Journal</title>
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
-  <link href="main.css" rel="stylesheet"></head>
-  <body>
-    <div id = "app">
-      <h1 class ="headline">
-        Travel Planner App
-      </h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Travel app</title>
+<link href="main.css" rel="stylesheet"></head>
+<body>
+    <!-- header of the page -->
+    <header>
+        <h1>TravelApp</h1>
+    </header>
 
-      <div class="travel-details" id="new-trip-details">
-        <!-- new location input entry form -->
-        <div id="whats-happening">
-          Please enter your next travel destination!
-        </div>
-        <div class="city-details">
-          <label for="new-city">My trip to:</label>
-          <input type="new-text" id="travel-to-city"
-		 placeholder="Enter Location Here">
-	  <span class="focus-border">
-        </div>
-        <div class="date-entry">
-          <label for="travel-date">Departing:</label>
-	  <span class="focus-border">
-          <input type="date" id="new-travel-date" min="2019-12-28"
-                 max="2020-12-28" disabled>
-        </div>
-        <button name="button" id="save-trip-button" disabled>Save Trip</button>
-      </div>
-      <div class="travel-details" id="upcoming-trip-holder">
-	<!-- Upcoming itinerary information -->
-      </div>
-    </div>
+    <!-- main part of the page -->
+    <main>
+        <!-- result for the user-->
+        <section id="tripCard" class="card hidden">
+            <div id="tripDataContainer">
+                <img id="tripImage" class="hidden" src="" />
+                <div id="tripInfo">
+                    <div id="tripHeading"></div>
+                    <div id="departureDate"></div>
+                    
+                    <div id="weather">
+                        Typical weather for the trip date:
+                        <div id="tempHigh" class="temp"></div>
+                        <div id="tempLow" class="temp"></div>
+                        <div id="weatherInfo">
+                            <img id="weatherIcon" class="inline" src="" width="50" height="50" />
+                            <div id="weatherText" class="inline"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- user input -->
+        <section>
+            <form>
+                <input id="cityName" type="text" name="input" placeholder="Enter your destination city" required>
+                <input id="tripDate" type="date" name="input" placeholder="Enter your trip date" required>
+                <input type="submit" name="submit" id="submitForm" value="Submit">
+            </form>
+            <div id="errorMessage" class="hidden"></div>
+        </section>
+    </main>
+
+    <!-- footer of the page -->
+    <footer>Hope you found what you wanted.</footer>
+    
     <script>
-      // Check that service workers are supported
-      if ('serviceWorker' in navigator) {
-          // Use the window load event to keep the page load performant
-          window.addEventListener('load', () => {
-	      navigator.serviceWorker.register('/service-worker.js');
-          });
-      }
+        //check that service workers are supported
+        if ('serviceWorker' in navigator) {
+            //use the window load event to keep the page load performant
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js');
+            });
+        }
     </script>
-  <script type="text/javascript" src="main.js"></script></body>
+<script type="text/javascript" src="main.js"></script></body>
 </html>
