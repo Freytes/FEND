@@ -2,13 +2,13 @@
 // Functions to handle Dark Sky API requests
 const fetch = require('node-fetch');
 
-const darkSkyUrl = 'https://api.darksky.net/forecast/';
+const weatherbitUrl = 'https://api.weatherbit.io/v2.0/forecast/daily/';
 
 const weatherQueryUrl = (lat, lgt, tdate, key) =>
-      `${darkSkyUrl}${key}/${lat},${lgt},${tdate}` +
+      `${weatherbitUrl}${key}/${lat},${lgt},${tdate}` +
       '?exclude=currently,hourly,minutely,flags';
 
-const queryWeather = async (request, darkSkyKey) => {
+const queryWeather = async (request, weatherbitKey) => {
     const latitude = request.latitude;
     const longitude = request.longitude;
     const placeName = request.placeName;
@@ -18,7 +18,7 @@ const queryWeather = async (request, darkSkyKey) => {
     // Dark Sky query
     const weatherResponse =
 	  await fetch(weatherQueryUrl(
-	      latitude, longitude, date, darkSkyKey))
+	      latitude, longitude, date, weatherbitKey))
 	  .then(res => res.json())
 	  .catch(err => {
 	      console.log('Error in getting weather Data: ', err);
@@ -27,4 +27,4 @@ const queryWeather = async (request, darkSkyKey) => {
     return weatherResponse.daily.data[0];
 };
 
-module.exports = { queryWeather, weatherQueryUrl, darkSkyUrl };
+module.exports = { queryWeather, weatherQueryUrl, weatherbitUrl };

@@ -1,5 +1,8 @@
 // Frontend javascript for Travel app
 
+// Read .env file for API keys
+const dotenv = require('dotenv');
+
 // Top level JS object to hold latest trip details 
 const upcomingTripDetails = {
     place: '',
@@ -15,7 +18,7 @@ const presentErr = console.log; // Error presentation function
 // "app.js: There should be URLS and API Keys for at least 3 APIs, including
 // Geonames, Dark Sky, and Pixabay."
 const geonamesUrl = 'http://api.geonames.org/postalCodeSearchJSON';
-const geonamesUser = 'deejay08';
+const geonamesUser = 'neodotneo';
 const coordQueryUrl = (place, user) => {
     // Need to handle input like 'City, State' as well as 'City State'
     return `${geonamesUrl}?placename=${encodeURIComponent(place)}&username=${user}` +
@@ -28,11 +31,11 @@ const coordQueryUrl = (place, user) => {
 // app.js. The API communication cannot happen through frontend app.js
 // owing to cross-origin restrictions in the dark sky API.
 /* eslint-disable */
-const darkSkyUrl = 'http://api.darksky.net/forecast/';
-const darkSkyKey = 'bfa91238e8d40ed514ccc04024cdab19';
+const weatherbitUrl = 'https://api.weatherbit.io/v2.0/forecast/daily/';
+const weatherbitKey = process.env.WEATHERBIT_KEY;
 
 const pixabayUrl = 'https://pixabay.com/api/?category=places&key=';
-const pixabayKey = '14764674-6073320ee678de9704f2a472c';
+const pixabayKey = process.env.PIXABAY_KEY;;
 /* eslint-enable */
 
 // Setup for REST Countries API -- one of the 'Extend your Project
