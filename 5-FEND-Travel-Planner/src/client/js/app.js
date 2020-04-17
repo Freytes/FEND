@@ -39,7 +39,7 @@ const getWeatherBit = async (days, lat, lot) => {
     } catch (error) {
         //deal with the error
         console.log('getWeatherBit error: ', error);
-        errorHandling(`There was and error: ${error}`);
+        errorHandling(`There was an error: ${error}`);
     }
 };
 
@@ -58,7 +58,7 @@ const getPixabay = async (cityCountry) => {
     } catch (error) {
         //deal with the error
         console.log('getPixabay error: ', error);
-        errorHandling(`There was and error: ${error}`);
+        errorHandling(`There was an error: ${error}`);
     }
 };
 
@@ -81,7 +81,7 @@ const postDataToServer = async (url = '', data = {}) => {
         return newData;
     } catch (error) {
         console.log('postData error: ', error);
-        errorHandling('There was and error. Please, try it again.');
+        errorHandling('There was an error. Please, try it again.');
     }
 };
 
@@ -146,7 +146,7 @@ const handleSubmit = event => {
                         }
                     })
             }
-            else errorHandling('Sorry, not found your city. Please enter different one');
+            else errorHandling('Sorry, city not found. Please enter different one');
         })
 };
 

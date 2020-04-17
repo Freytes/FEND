@@ -7,9 +7,9 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
+   
     entry: './src/client/index.js',
     mode: 'production',
-    target: 'node',
     optimization: {
         minimizer: [new TerserPlugin({}), new OptimizeCSSAssetsPlugin({})]
     },
@@ -31,6 +31,7 @@ module.exports = {
         ]
     },
     plugins: [
+
         new HtmlWebPackPlugin({
             template: "./src/client/views/index.html",
             filename: "./index.html",
@@ -38,6 +39,8 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: '[name].css'
         }),
+     
         new WorkboxPlugin.GenerateSW()
-    ]
-}
+    ],
+
+    }

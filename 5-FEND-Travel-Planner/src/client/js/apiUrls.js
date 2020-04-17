@@ -1,10 +1,7 @@
-const dotenv = require('dotenv');
-dotenv.config();
-
 /* GeoNames */
 const geoNamesApiUrl = name => {
     const baseUrl = 'http://api.geonames.org/searchJSON';
-    const urlParts = '?username=' + process.env.GEONAMESUN + '&fuzzy=0.8&maxRows=10&name=';
+    const urlParts = '?username=neodotneo&fuzzy=0.8&maxRows=10&name=';
 
     return baseUrl + urlParts + name;
 };
@@ -13,7 +10,7 @@ const geoNamesApiUrl = name => {
 /* WeatherBit */
 const weatherBitApiUrl = (day, lat, lon) => {
     const baseUrl = 'http://api.weatherbit.io/v2.0/forecast/daily';
-    const urlParts = '?units=I&key=' + process.env.WEATHERBITKEY;
+    const urlParts = '?units=I&key=1e0ea9ee0d1b46fea1cf28424f5d4cd5';
     const dayPart = '&days=';
     const latPart = '&lat=';
     const lonPart = '&lon=';
@@ -24,7 +21,7 @@ const weatherBitApiUrl = (day, lat, lon) => {
 /* Pixabay */
 const pixaBayApiUrl = query => {
     const baseUrl = 'https://pixabay.com/api/';
-    const urlParts = '?key=' + process.env.PIXELBAYKEY + '&per_page=3&image_type=photo&q=';
+    const urlParts = '?key=16017022-ebded3b131fe54a50ee8d9546&per_page=3&image_type=photo&q=';
 
     return baseUrl + urlParts + query;
 };
